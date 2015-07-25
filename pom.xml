@@ -3,7 +3,7 @@
     <groupId>org.venth.training</groupId>
     <version>1.0</version>
     <artifactId>training-rxjava-hystrix</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <name>yet another merge sort; just to recall skills</name>
 
     <properties>
@@ -16,6 +16,7 @@
 
         <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
+        <gmavenplus-plugin.version>1.5</gmavenplus-plugin.version>
 
         <!-- application -->
 
@@ -30,8 +31,9 @@
 
         <!-- test libraries -->
         <junit.version>4.12</junit.version>
-        <assertj.version>3.1.0</assertj.version>
-        <mockito.version>1.10.19</mockito.version>
+        <spock.version>1.0-groovy-2.4</spock.version>
+        <groovy.version>2.4.4</groovy.version>
+        <cglib-nodep.version>3.1</cglib-nodep.version>
     </properties>
 
     <dependencies>
@@ -89,16 +91,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-        </dependency>
-
     </dependencies>
 
     <dependencyManagement>
@@ -185,6 +181,26 @@
                 <version>${mockito.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.spockframework</groupId>
+                <artifactId>spock-core</artifactId>
+                <version>${spock.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cglib</groupId>
+                <artifactId>cglib-nodep</artifactId>
+                <version>${cglib-nodep.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
+                <version>${groovy.version}</version>
+            </dependency>
+
+
+
         </dependencies>
     </dependencyManagement>
 
@@ -197,6 +213,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
             </plugin>
         </plugins>
         <pluginManagement>
@@ -212,6 +232,40 @@
                         <debug>true</debug>
                         <debuglevel>lines,vars,source</debuglevel>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <version>${gmavenplus-plugin.version}</version>
+                    <configuration>
+                        <testSources>
+                            <fileset>
+                                <directory>${pom.basedir}/src/test/java</directory>
+                                <includes>
+                                    <include>**/*.groovy</include>
+                                </includes>
+                            </fileset>
+                        </testSources>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.codehaus.groovy</groupId>
+                            <artifactId>groovy-all</artifactId>
+                            <version>${groovy.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>cglib</groupId>
+                            <artifactId>cglib-nodep</artifactId>
+                            <version>${cglib-nodep.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>testCompile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <!-- unit tests configuration -->
                 <plugin>
