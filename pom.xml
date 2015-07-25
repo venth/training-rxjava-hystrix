@@ -4,7 +4,7 @@
     <version>1.0</version>
     <artifactId>training-rxjava-hystrix</artifactId>
     <packaging>jar</packaging>
-    <name>yet another merge sort; just to recall skills</name>
+    <name>yet another rxjava hystrix combination; just to polish skills</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
